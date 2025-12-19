@@ -29,3 +29,33 @@ themeToggle.addEventListener('click', () => {
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
 });
+
+// Crypto functionality
+const messageInput = document.getElementById('message-input');
+const passwordInput = document.getElementById('password-input');
+const encryptBtn = document.getElementById('encrypt-btn');
+const decryptBtn = document.getElementById('decrypt-btn');
+
+const callApi = async (endpoint, message, password) => {
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message, password }),
+    });
+    const data = await response.json();
+    messageInput.value = data.result;
+};
+
+encryptBtn.addEventListener('click', () => {
+    const message = messageInput.value;
+    const password = passwordInput.value;
+    callApi('/encrypt', message, password);
+});
+
+decryptBtn.addEventListener('click', () => {
+    const message = messageInput.value;
+    const password = passwordInput.value;
+    callApi('/decrypt', message, password);
+});
